@@ -1,12 +1,19 @@
 import unittest
+from itertools import product
 
 import numpy as np
 
-from glimpse import slice_with_pad, get_bounds
+from glimpse import get_bounds, get_patch, slice_with_pad
 
 
 """
 TODO
+
+TestGetPatch
+    - add more meaningful tests
+
+TestGetBounds
+    - add more meaningful tests
 
 TestSliceWithPad
     - abstract out to only specify bounds as whether in or out and generate
@@ -15,12 +22,55 @@ TestSliceWithPad
 """
 
 
+class TestGetPatch(unittest.TestCase):
+    """tests the get_patch function"""
+
+    def setUp(self):
+        self.heights = [1000, 300, 500, 2053]
+        self.widths = [1000, 700, 55, 2000]
+        self.locs = [(0,0), (-1, -1), (1, 1), (-1, 1), (-7, -7)]
+        self.sizes = [50, 100, 20, 3]
+
+    def test_x_y_equal_size(self):
+        """tests that the side length of the patch is the same as the size"""
+
+        param_iter = product(self.heights, self.widths, self.locs, self.sizes)
+        for height, width, loc, size in param_iter:
+            img = np.ones((height, width))
+            patch = get_patch(img, loc, size)
+
+            x_patch, y_patch = patch.shape
+            self.assertEqual(x_patch, size)
+            self.assertEqual(y_patch, size)
+
+
+class TestGetBounds(unittest.TestCase):
+    """tests the get_bounds function"""
+
+    def setUp(self):
+        self.heights = [1000, 300, 500, 2053]
+        self.widths = [1000, 700, 55, 2000]
+        self.locs = [(0,0), (-1, -1), (1, 1), (-1, 1)]
+        self.sizes = [50, 100, 20, 3]
+
+    def test_side_length_is_size(self):
+        """tests that the side length of each side is the same as size"""
+
+        param_iter = product(self.heights, self.widths, self.locs, self.sizes)
+        for height, width, loc, size in param_iter:
+            x_start, x_end, y_start, y_end = get_bounds(
+                height, width, loc, size)
+
+            self.assertEqual(x_end - x_start, size)
+            self.assertEqual(y_end - y_start, size)
+
+
 class TestSliceWithPad(unittest.TestCase):
     """tests the slide_with_pad function"""
 
     def setUp(self):
         self.height = 1001
-        self.width = 400
+        self.width = 403
 
         self.arr = (np.arange(self.height * self.width)
                       .reshape(self.height, self.width))
