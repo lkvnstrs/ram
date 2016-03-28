@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.misc import imread, imresize
 
+
 def glimpse_sensor(img, loc, size, scale, depth):
     """gets a glimpse of img at the location loc
 
