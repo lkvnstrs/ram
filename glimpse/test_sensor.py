@@ -3,7 +3,7 @@ from itertools import product
 
 import numpy as np
 
-from glimpse import get_bounds, get_patch, slice_with_pad
+from glimpse.sensor import get_bounds, get_patch, slice_with_pad
 
 
 """
@@ -28,7 +28,7 @@ class TestGetPatch(unittest.TestCase):
     def setUp(self):
         self.heights = [1000, 300, 500, 2053]
         self.widths = [1000, 700, 55, 2000]
-        self.locs = [(0,0), (-1, -1), (1, 1), (-1, 1), (-7, -7)]
+        self.locs = [(0, 0), (-1, -1), (1, 1), (-1, 1), (-7, -7)]
         self.sizes = [50, 100, 20, 3]
 
     def test_x_y_equal_size(self):
@@ -50,7 +50,7 @@ class TestGetBounds(unittest.TestCase):
     def setUp(self):
         self.heights = [1000, 300, 500, 2053]
         self.widths = [1000, 700, 55, 2000]
-        self.locs = [(0,0), (-1, -1), (1, 1), (-1, 1)]
+        self.locs = [(0, 0), (-1, -1), (1, 1), (-1, 1)]
         self.sizes = [50, 100, 20, 3]
 
     def test_side_length_is_size(self):
