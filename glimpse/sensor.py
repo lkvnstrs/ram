@@ -27,7 +27,7 @@ def glimpse_sensor(img, loc, size, scale, depth):
     :param depth: number of patches in the glimpse
     :type depth: int
 
-    :returns: glimpse of shape (num_patches, size[0], size[1])
+    :returns: glimpse of shape (depth, size, size)
     :rtype: numpy.ndarray
     """
 

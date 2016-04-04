@@ -35,8 +35,8 @@ class DenseLayer(object):
 
         self.ins = ins
 
-        W = self._weight_init(rng) if W is None else W
-        b = self._bias_init(rng) if b is None else b
+        W = self._weight_init(rng, (n_out, n_in)) if W is None else W
+        b = self._bias_init(rng, (n_out,)) if b is None else b
 
         self.W = theano.shared(value=W, name='W_' + str(id(self)), borrow=True)
         self.b = theano.shared(value=b, name='b_' + str(id(self)), borrow=True)
@@ -62,7 +62,7 @@ class DenseLayer(object):
         weight_scale = 10 ** -2
 
         return np.asarray(
-            weight_scale * rng.normal(size=(n_out, n_in)),
+            weight_scale * rng.normal(size=shape),
             dtype=theano.config.floatX)
 
     @staticmethod
@@ -79,14 +79,14 @@ class DenseLayer(object):
         :rtype: numpy.ndarray
         """
 
-        return np.zeros((n_out,), dtype=theano.config.floatX)
+        return np.zeros(shape, dtype=theano.config.floatX)
 
 
 class ReLULayer(DenseLayer):
     """class implementing a layer with rectified linear activation"""
 
     def __init__(self, rng, ins, n_in, n_out, W=None, b=None):
-        return super(LinearLayer, self).__init__(
+        return super(ReLULayer, self).__init__(
             rng, ins, n_in, n_out, W, b, T.nnet.relu)
 
 
